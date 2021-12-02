@@ -1,6 +1,6 @@
 from pathlib import Path
 from typing import Iterator
-from utils import generate_ints
+from utils import read_ints
 
 
 def q1(values):
@@ -12,7 +12,7 @@ def q2(values):
 
 
 def main():
-    values = [*generate_ints("./1.txt")]
+    values = read_ints("./1.txt")
     q1(values)
     q2(values)
 
