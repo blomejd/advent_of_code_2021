@@ -1,6 +1,7 @@
 import re
 from utils import read_trimmed
 from collections import Counter
+from itertools import chain
 
 
 class Line:
@@ -15,14 +16,14 @@ class Line:
             xs = [self.x1] * (abs(self.y2 - self.y1) + 1)
         else:
             x_d = 1 if self.x1 < self.x2 else -1
-            xs = [*range(self.x1, self.x2 + x_d, x_d)]
+            xs = range(self.x1, self.x2 + x_d, x_d)
 
         if self.y1 == self.y2:
             ys = [self.y1] * (abs(self.x2 - self.x1) + 1)
         else:
             y_d = 1 if self.y1 < self.y2 else -1
-            ys = [*range(self.y1, self.y2 + y_d, y_d)]
-        return [(x, y) for (x, y) in zip(xs, ys)]
+            ys = range(self.y1, self.y2 + y_d, y_d)
+        return zip(xs, ys)
 
 
 def parse_lines(values):
@@ -31,11 +32,7 @@ def parse_lines(values):
 
 
 def count_values(lines):
-    count = Counter()
-    for l in lines:
-        for p in l.get_points():
-            count[p] += 1
-
+    count = Counter(chain.from_iterable(l.get_points() for l in lines))
     return len([v for v in count.values() if v >= 2])
 
 
