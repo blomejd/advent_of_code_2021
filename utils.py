@@ -15,11 +15,15 @@ def read_ints(filename: str) -> List[int]:
     return [int(l) for l in read_trimmed(filename)]
 
 
+def read_int_rows(filename: str):
+    return [[int(c) for c in row] for row in read_trimmed(filename)]
+
+
 def read_delimited(filename: str, delimiter: str) -> List[str]:
     return [l.split(delimiter) for l in read_trimmed(filename)]
 
 
-def get_neighbor_coords(x, y, grid):
+def get_orthogonal_coords(x, y, grid):
     width = len(grid[0])
     height = len(grid)
     neighbors = set()
@@ -34,8 +38,24 @@ def get_neighbor_coords(x, y, grid):
     return neighbors
 
 
+def get_neighbor_coords(x, y, grid):
+    width = len(grid[0])
+    height = len(grid)
+    neighbors = set()
+    for x_d, y_d in [(-1, -1), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1)]:
+        x_n = x + x_d
+        y_n = y + y_d
+        if 0 <= x_n < width and 0 <= y_n < height:
+            neighbors.add((x_n, y_n))
+    return neighbors
+
+
 def get_neighbors(x, y, grid):
     return [grid[y_n][x_n] for x_n, y_n in get_neighbor_coords(x, y, grid)]
+
+
+def get_orthogonal_neighbors(x, y, grid):
+    return [grid[y_n][x_n] for x_n, y_n in get_orthogonal_coords(x, y, grid)]
 
 
 def iter_coords(grid):
