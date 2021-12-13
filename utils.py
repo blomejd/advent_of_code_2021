@@ -1,5 +1,6 @@
 from pathlib import Path
 from typing import List
+from itertools import product
 
 
 def read_lines(filename: str) -> List[str]:
@@ -62,3 +63,42 @@ def iter_coords(grid):
     for x in range(len(grid[0])):
         for y in range(len(grid)):
             yield x, y
+
+
+def get_dimensions(grid):
+    dimensions = []
+    grid_copy = grid
+    while isinstance(grid_copy, list):
+        dimensions.append(len(grid_copy))
+        if grid_copy:
+            grid_copy = grid_copy[0]
+        else:
+            break
+    return dimensions
+
+
+def one(iterable):
+    return len([v for v in iterable if v]) == 1
+
+
+def get_neighbor_coords_n_dimensional(grid, coord, orthogonal=True, diagonal=True):
+    dimensions = get_dimensions(grid)
+    deltas = list(product(*[[1, 0, -1] for _ in dimensions]))
+    if orthogonal and diagonal:
+        deltas = [d for d in deltas if any(n != 0 for n in d)]
+    elif orthogonal:
+        deltas = [d for d in deltas if one(n != 0 for n in d)]
+    elif diagonal:
+        deltas = [d for d in deltas if all(n != 0 for n in d)]
+    for delta in deltas:
+        # yield tuple(coord[i] + delta[i] for i in range(dimensions))
+        if all(0 <= c + d < dim for dim, c, d in zip(dimensions, coord, delta)):
+            yield tuple(c + d for c, d in zip(coord, delta))
+
+
+def get_neighbors_n_dimensional(grid, coord, orthogonal=True, diagonal=True):
+    for neighbor_coord in get_neighbor_coords_n_dimensional(grid, coord, orthogonal, diagonal):
+        needle = grid
+        for c in neighbor_coord:
+            needle = needle[c]
+        yield needle
