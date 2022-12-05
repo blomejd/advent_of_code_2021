@@ -99,6 +99,6 @@ def get_neighbor_coords_n_dimensional(grid, coord, orthogonal=True, diagonal=Tru
 def get_neighbors_n_dimensional(grid, coord, orthogonal=True, diagonal=True):
     for neighbor_coord in get_neighbor_coords_n_dimensional(grid, coord, orthogonal, diagonal):
         needle = grid
-        for c in neighbor_coord:
+        for c in reversed(neighbor_coord):
             needle = needle[c]
         yield needle
