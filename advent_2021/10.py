@@ -1,9 +1,10 @@
-from pathlib import Path
-from typing import Iterator
-from utils import read_trimmed
 from collections import deque
-from statistics import median
 from functools import reduce
+from pathlib import Path
+from statistics import median
+from typing import Iterator
+
+from utils import read_trimmed
 
 OPENERS = {"(", "[", "{", "<"}
 MAP = {"(": ")", "[": "]", "{": "}", "<": ">"}

@@ -1,6 +1,6 @@
+from itertools import product, zip_longest
 from pathlib import Path
 from typing import List
-from itertools import product
 
 
 def read_lines(filename: str) -> List[str]:
@@ -20,7 +20,7 @@ def read_int_rows(filename: str):
     return [[int(c) for c in row] for row in read_trimmed(filename)]
 
 
-def read_delimited(filename: str, delimiter: str) -> List[str]:
+def read_delimited(filename: str, delimiter: str) -> List[List[str]]:
     return [l.split(delimiter) for l in read_trimmed(filename)]
 
 
@@ -102,3 +102,20 @@ def get_neighbors_n_dimensional(grid, coord, orthogonal=True, diagonal=True):
         for c in reversed(neighbor_coord):
             needle = needle[c]
         yield needle
+
+
+# Stolen from https://docs.python.org/3/library/itertools.html#itertools-recipes
+def grouper(iterable, n, *, incomplete="fill", fillvalue=None):
+    "Collect data into non-overlapping fixed-length chunks or blocks"
+    # grouper('ABCDEFG', 3, fillvalue='x') --> ABC DEF Gxx
+    # grouper('ABCDEFG', 3, incomplete='strict') --> ABC DEF ValueError
+    # grouper('ABCDEFG', 3, incomplete='ignore') --> ABC DEF
+    args = [iter(iterable)] * n
+    if incomplete == "fill":
+        return zip_longest(*args, fillvalue=fillvalue)
+    if incomplete == "strict":
+        return zip(*args, strict=True)
+    if incomplete == "ignore":
+        return zip(*args)
+    else:
+        raise ValueError("Expected fill, strict, or ignore")

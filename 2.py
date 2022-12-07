@@ -27,14 +27,6 @@ def score(them, us):
     return 3 + shape_score[us]
 
 
-def score(them, us):
-    if them in wins[us]:
-        return 6 + shape_score[us]
-    if us in wins[them]:
-        return 0 + shape_score[us]
-    return 3 + shape_score[us]
-
-
 def q1(values):
     return sum(score(*line.split(" ")) for line in values)
 

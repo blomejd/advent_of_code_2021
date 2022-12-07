@@ -1,0 +1,20 @@
+##################################################
+# Tooling
+##################################################
+bandit
+black
+coverage
+datetime
+ipython
+isort
+mypy
+pydantic
+pylint
+pylint-junit           # used by Jenkins for lint reporting
+pytest-mock
+pytz
+
+# Type Extensions (never imported)
+types-mock
+types-pytz
+types-simplejson

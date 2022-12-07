@@ -1,6 +1,7 @@
 import re
-from utils import read_delimited
 from collections import Counter
+
+from utils import read_delimited
 
 reset_val = 8
 

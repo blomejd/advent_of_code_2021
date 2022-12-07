@@ -1,8 +1,9 @@
 import re
-from utils import read_delimited
 from collections import Counter, defaultdict
-from math import floor
 from itertools import chain
+from math import floor
+
+from utils import read_delimited
 
 
 def q1(values):

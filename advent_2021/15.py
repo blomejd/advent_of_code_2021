@@ -1,9 +1,9 @@
-from pathlib import Path
-from typing import Iterator
-from utils import get_neighbors_n_dimensional, read_trimmed, iter_coords
-from collections import deque, defaultdict, namedtuple
-from statistics import median
+from collections import defaultdict, deque, namedtuple
 from math import inf
+from statistics import median
+from typing import Iterator
+
+from utils import get_neighbors_n_dimensional, iter_coords, read_trimmed
 
 
 class Path:

@@ -1,8 +1,9 @@
 import re
-from utils import read_delimited
 from collections import Counter
 from math import floor
-from statistics import median, mean
+from statistics import mean, median
+
+from utils import read_delimited
 
 
 def q1(values):

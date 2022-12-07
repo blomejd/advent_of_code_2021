@@ -1,7 +1,8 @@
 import re
-from utils import read_trimmed
 from collections import Counter
 from itertools import chain
+
+from utils import read_trimmed
 
 
 class Line:

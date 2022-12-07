@@ -1,8 +1,9 @@
-from pathlib import Path
-from typing import Iterator
-from utils import get_neighbors_n_dimensional, get_neighbor_coords_n_dimensional, get_dimensions
 from collections import deque
+from pathlib import Path
 from statistics import median
+from typing import Iterator
+
+from utils import get_dimensions, get_neighbor_coords_n_dimensional, get_neighbors_n_dimensional
 
 
 def main():

@@ -1,5 +1,6 @@
 from pathlib import Path
 from typing import Iterator
+
 from utils import read_ints
 
 

@@ -36,7 +36,7 @@ class Board:
 
 
 def mark_check_test(raw_board):
-    """ Test mark and check for board 0 """
+    """Test mark and check for board 0"""
     b = Board(raw_board)
     b.mark(97)
     assert not b.check()

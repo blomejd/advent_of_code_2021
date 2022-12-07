@@ -1,5 +1,6 @@
-from utils import read_trimmed, iter_coords, get_orthogonal_neighbors, get_orthogonal_coords
 from math import prod
+
+from utils import get_orthogonal_coords, get_orthogonal_neighbors, iter_coords, read_trimmed
 
 
 def iter_basins(grid):

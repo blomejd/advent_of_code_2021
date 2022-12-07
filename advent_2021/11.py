@@ -1,8 +1,9 @@
-from pathlib import Path
-from typing import Iterator
-from utils import get_neighbor_coords, get_neighbors, iter_coords, read_int_rows
 from collections import deque
+from pathlib import Path
 from statistics import median
+from typing import Iterator
+
+from utils import get_neighbor_coords, get_neighbors, iter_coords, read_int_rows
 
 
 class Octopus:

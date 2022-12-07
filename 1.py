@@ -1,5 +1,6 @@
-from utils import read_trimmed
 from heapq import heappush, nlargest
+
+from utils import read_trimmed
 
 
 def q1(values):

@@ -1,14 +1,11 @@
-from pathlib import Path
-from typing import Iterator
-from utils import get_neighbors_n_dimensional, read_trimmed
-from collections import deque, defaultdict, namedtuple
-from statistics import median
 from math import prod
+
+from utils import get_neighbors_n_dimensional, read_trimmed
 
 
 class Packet:
-    children = []
-    content = None
+    children: list = []
+    content: str | None = None
     type_map = {
         0: sum,
         1: prod,

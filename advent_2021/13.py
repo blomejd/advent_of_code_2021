@@ -1,8 +1,9 @@
+from collections import defaultdict, deque, namedtuple
 from pathlib import Path
-from typing import Iterator
-from utils import get_neighbors_n_dimensional, read_trimmed
-from collections import deque, defaultdict, namedtuple
 from statistics import median
+from typing import Iterator
+
+from utils import get_neighbors_n_dimensional, read_trimmed
 
 
 class DictLike:

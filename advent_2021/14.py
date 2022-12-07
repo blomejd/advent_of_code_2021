@@ -1,8 +1,9 @@
+from collections import Counter, defaultdict, deque, namedtuple
 from pathlib import Path
-from typing import Iterator
-from utils import get_neighbors_n_dimensional, read_trimmed
-from collections import deque, defaultdict, namedtuple, Counter
 from statistics import median
+from typing import Iterator
+
+from utils import get_neighbors_n_dimensional, read_trimmed
 
 
 def chunks(l, n):
@@ -160,8 +161,8 @@ def q2_4(start, pairs):
 def parse_values(filename: str):
     lines = read_trimmed(filename)
     start = lines[0]
-    lines = [s.split("->") for s in lines[2:] if s]
-    pairs = [(s[0].strip(), s[1].strip()) for s in lines]
+    split_lines = [s.split("->") for s in lines[2:] if s]
+    pairs = [(s[0].strip(), s[1].strip()) for s in split_lines]
     return start, pairs
 
 

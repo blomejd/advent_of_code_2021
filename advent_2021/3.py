@@ -1,5 +1,6 @@
-from utils import read_trimmed
 from collections import Counter
+
+from utils import read_trimmed
 
 
 def invert(values):
