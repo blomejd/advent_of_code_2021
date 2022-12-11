@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from itertools import product, zip_longest
 from pathlib import Path
 from typing import List
@@ -119,3 +121,40 @@ def grouper(iterable, n, *, incomplete="fill", fillvalue=None):
         return zip(*args)
     else:
         raise ValueError("Expected fill, strict, or ignore")
+
+
+class Point:
+    def __init__(self, x, y) -> None:
+        self.x = x
+        self.y = y
+
+    def add(self, p: Point):
+        self.x += p.x
+        self.y += p.y
+
+    def __repr__(self) -> str:
+        return f"({self.x}, {self.y})"
+
+    def __hash__(self) -> int:
+        return hash((self.x, self.y))
+
+    def dir_to(self, p: Point):
+        d_x = p.x - self.x
+        d_y = p.y - self.y
+        if abs(d_x) <= 1 and abs(d_y) <= 1:
+            return Point(0, 0)
+        return Point(self.to_one(d_x), self.to_one(d_y))
+
+    @staticmethod
+    def to_one(n):
+        if n == 0:
+            return 0
+        return 1 if n > 0 else -1
+
+
+dir_map = {
+    "U": Point(0, 1),
+    "D": Point(0, -1),
+    "L": Point(-1, 0),
+    "R": Point(1, 0),
+}
