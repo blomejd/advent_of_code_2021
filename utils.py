@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from fractions import Fraction
 from itertools import product, zip_longest
 from pathlib import Path
 from typing import List
@@ -123,20 +124,24 @@ def grouper(iterable, n, *, incomplete="fill", fillvalue=None):
         raise ValueError("Expected fill, strict, or ignore")
 
 
-class Point:
+class Point(tuple):
     def __init__(self, x, y) -> None:
+        # super().__init__([x, y])
         self.x = x
         self.y = y
+
+    def __new__(cls, x, y):
+        return super().__new__(cls, tuple([x, y]))
 
     def add(self, p: Point):
         self.x += p.x
         self.y += p.y
 
-    def __repr__(self) -> str:
-        return f"({self.x}, {self.y})"
+    # def __repr__(self) -> str:
+    #     return f"({self.x}, {self.y})"
 
-    def __hash__(self) -> int:
-        return hash((self.x, self.y))
+    # def __hash__(self) -> int:
+    #     return hash((self.x, self.y))
 
     def dir_to(self, p: Point):
         d_x = p.x - self.x
@@ -150,6 +155,21 @@ class Point:
         if n == 0:
             return 0
         return 1 if n > 0 else -1
+
+    def points_between(self, other: Point) -> list[Point]:
+        d_x = other.x - self.x
+        d_y = other.y - self.y
+        if d_x == 0:
+            bottom, top = (self, other) if self.y <= other.y else (other, self)
+            return [Point(self.x, y_0) for y_0 in range(bottom.y, top.y + 1, 1)]
+        left, right = (self, other) if self.x <= other.x else (other, self)
+        if d_y == 0:
+            return [Point(x_0, self.y) for x_0 in range(left.x, right.x + 1, 1)]
+        f = Fraction(d_y, d_x)
+        left, right = (self, other) if self.x <= other.x else (other, self)
+        g_x = range(left.x, right.x + 1, f.denominator)
+        g_y = range(left.y, right.y + 1, f.numerator)
+        return [Point(*c) for c in zip(g_x, g_y)]
 
 
 dir_map = {
