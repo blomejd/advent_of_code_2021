@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 from fractions import Fraction
 from itertools import product, zip_longest
 from pathlib import Path
@@ -84,8 +85,14 @@ def one(iterable):
     return len([v for v in iterable if v]) == 1
 
 
-def get_neighbor_coords_n_dimensional(grid, coord, orthogonal=True, diagonal=True):
-    dimensions = get_dimensions(grid)
+def get_neighbor_coords_n_dimensional(
+    grid,
+    coord,
+    orthogonal=True,
+    diagonal=True,
+    allowNegatives=False,
+):
+    dimensions = get_dimensions(grid) if grid else [math.inf] * len(coord)
     deltas = list(product(*[[1, 0, -1] for _ in dimensions]))
     if orthogonal and diagonal:
         deltas = [d for d in deltas if any(n != 0 for n in d)]
@@ -93,9 +100,9 @@ def get_neighbor_coords_n_dimensional(grid, coord, orthogonal=True, diagonal=Tru
         deltas = [d for d in deltas if one(n != 0 for n in d)]
     elif diagonal:
         deltas = [d for d in deltas if all(n != 0 for n in d)]
+    lower_bound = -math.inf if allowNegatives else 0
     for delta in deltas:
-        # yield tuple(coord[i] + delta[i] for i in range(dimensions))
-        if all(0 <= c + d < dim for dim, c, d in zip(dimensions, coord, delta)):
+        if all(lower_bound <= c + d < dim for dim, c, d in zip(dimensions, coord, delta)):
             yield tuple(c + d for c, d in zip(coord, delta))
 
 
@@ -137,6 +144,9 @@ class Point(tuple):
         self.x += p.x
         self.y += p.y
 
+    def translate(self, x, y):
+        return Point(self.x + x, self.y + y)
+
     # def __repr__(self) -> str:
     #     return f"({self.x}, {self.y})"
 
@@ -167,9 +177,31 @@ class Point(tuple):
             return [Point(x_0, self.y) for x_0 in range(left.x, right.x + 1, 1)]
         f = Fraction(d_y, d_x)
         left, right = (self, other) if self.x <= other.x else (other, self)
+        y_mod = 1 if f.numerator > 0 else -1
         g_x = range(left.x, right.x + 1, f.denominator)
-        g_y = range(left.y, right.y + 1, f.numerator)
+        g_y = range(left.y, right.y + y_mod, f.numerator)
         return [Point(*c) for c in zip(g_x, g_y)]
+
+    @staticmethod
+    def between(first: Point, last: Point) -> list[Point]:
+        d_x = first.x - last.x
+        d_y = first.y - last.y
+        if d_x == 0:
+            bottom, top = (last, first) if last.y <= first.y else (first, last)
+            return [Point(last.x, y_0) for y_0 in range(bottom.y, top.y + 1, 1)]
+        left, right = (last, first) if last.x <= first.x else (first, last)
+        if d_y == 0:
+            return [Point(x_0, last.y) for x_0 in range(left.x, right.x + 1, 1)]
+        f = Fraction(d_y, d_x)
+        left, right = (last, first) if last.x <= first.x else (first, last)
+        y_mod = 1 if f.numerator > 0 else -1
+        g_x = range(left.x, right.x + 1, f.denominator)
+        g_y = range(left.y, right.y + y_mod, f.numerator)
+        return [Point(*c) for c in zip(g_x, g_y)]
+
+    @staticmethod
+    def manhattan(first: Point, last: Point) -> int:
+        return abs(first.x - last.x) + abs(first.y - last.y)
 
 
 dir_map = {

@@ -6,29 +6,20 @@ from functools import cmp_to_key, reduce
 from heapq import heapify
 from itertools import chain, pairwise, product, takewhile
 
-from utils import Point, iter_coords, read_trimmed
+
+from utils import Point, iter_coords, read_trimmed, get_neighbor_coords
 
 f = __file__.replace("py", "txt")
 
 
-def parse(f) -> list[tuple[Point, Point, int]]:
-    g = [[int(d) for d in l.split(" ")] for l in read_trimmed(f)]
-    g2 = ((Point(x, y), Point(x_0, y_0)) for x, y, x_0, y_0 in g)
-    return [(s, b, Point.manhattan(s, b)) for s, b in g2]
+def parse(f) -> list[tuple[int, int, int]]:
+    return [eval(l) for l in read_trimmed(f)]
 
 
-def q1(lines: list[tuple[Point, Point, int]]):
-    x_min = min(s.x - d for s, b, d in lines)
-    x_max = max(s.x + d for s, b, d in lines)
-    y = 2_000_000
-    lines = [(s, b, d) for s, b, d in lines if s.y + d >= y >= s.y - d]
-    return len(
-        {
-            x
-            for x in range(x_min, x_max + 1)
-            if any(Point.manhattan(Point(x, y), s) <= d and Point(x, y) != b for s, b, d in lines)
-        }
-    )
+def q1(lines: list[tuple[int,int, int]]):
+    points = set(lines)
+    for p in points:
+
 
 
 TUNING = 4_000_000
